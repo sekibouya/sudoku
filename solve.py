@@ -47,6 +47,18 @@ def tate_yoko_sikaku(possibilities):
                             new_possibilities[m][n].remove(num)
     return new_possibilities
 
+def check_only_one_tate_yoko(posibilities):
+    new_possibilities = copy.deepcopy(posibilities)
+    for i in range(9):
+        for j in range(9):
+            if len(new_possibilities[i][j]) > 1:
+                for num in new_possibilities[i][j]:
+                    only_in_tate = [num not in new_possibilities[k][j] for k in range(9) if k != i]
+                    only_in_yoko = [num not in new_possibilities[i][k] for k in range(9) if k != j]
+                    if all(only_in_tate) or all(only_in_yoko):
+                        new_possibilities[i][j] = [num]
+    return new_possibilities
+
 def print_answer(possibilities):
     answer = []
     for i in range(9):
