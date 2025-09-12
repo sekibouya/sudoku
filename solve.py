@@ -78,6 +78,57 @@ def check_only_one_tate_yoko(possibilities):
                         new_possibilities[i][j] = [num]
     return new_possibilities
 
+def check_common(possibilities):
+    new_possibilities = copy.deepcopy(possibilities)
+    # possibilities[i][j]の配列の要素集合が、横、縦、四角の中で、その配列の要素集合と等しければ、same_cellsに(i,j)を追加
+    # same_cellsの長さと、配列の要素集合の長さが等しければ、same_cellsに含まれないセルから、配列の要素集合の要素を削除
+    for i in range(9):
+        for j in range(9):
+            if len(new_possibilities[i][j]) > 1:
+                current_set = set(new_possibilities[i][j])
+
+                # column
+                same_cells = []
+                same_cells.append((i, j))
+                for col in range(9):
+                    if col != j and set(new_possibilities[i][col]) == current_set and len(new_possibilities[i][col]) == len(current_set):
+                        same_cells.append((i, col))
+                if len(same_cells)  == len(current_set):
+                    for num in current_set:
+                        for col in range(9):
+                            if (i, col) not in same_cells and num in new_possibilities[i][col]:
+                                new_possibilities[i][col].remove(num)
+                
+                # row
+                same_cells = []
+                same_cells.append((i, j))
+                for row in range(9):
+                    if row != i and set(new_possibilities[row][j]) == current_set and len(new_possibilities[row][j]) == len(current_set) and (row, j) not in same_cells:
+                        same_cells.append((row, j))
+                if len(same_cells)  == len(current_set):
+                    for num in current_set:
+                        for row in range(9):
+                            if (row, j) not in same_cells and num in new_possibilities[row][j]:
+                                new_possibilities[row][j].remove(num)
+
+                # box
+                same_cells = []
+                same_cells.append((i, j))
+                box_row = (i // 3)
+                box_col = (j // 3)
+                for m in range(box_row * 3, box_row * 3 + 3):
+                    for n in range(box_col * 3, box_col * 3 + 3):
+                        if (m, n) != (i, j) and set(new_possibilities[m][n]) == current_set and len(new_possibilities[m][n]) == len(current_set) and (m, n) not in same_cells:
+                            same_cells.append((m, n))
+                if len(same_cells)  == len(current_set):
+                    for num in current_set:
+                        for m in range(box_row * 3, box_row * 3 + 3):
+                            for n in range(box_col * 3, box_col * 3 + 3):
+                                if (m, n) not in same_cells and num in new_possibilities[m][n]:
+                                    new_possibilities[m][n].remove(num)
+                    
+    return new_possibilities
+
 def print_answer(possibilities):
     answer = []
     for i in range(9):
@@ -95,11 +146,11 @@ def solve(board):
         new_possibilities = tate_yoko_sikaku(possibilities)
         new_possibilities = check_only_one_sikaku(new_possibilities)
         new_possibilities = check_only_one_tate_yoko(new_possibilities)
+        new_possibilities = check_common(new_possibilities)
         if new_possibilities == possibilities:
             break
         possibilities = new_possibilities
-    # print_answer(new_possibilities)
-    print(possibilities)
+    print_answer(new_possibilities)
 
 if __name__ == "__main__":
     for i,level in enumerate(question.questions):
