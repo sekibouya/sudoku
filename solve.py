@@ -47,6 +47,26 @@ def tate_yoko_sikaku(possibilities):
                             new_possibilities[m][n].remove(num)
     return new_possibilities
 
+def check_only_one_sikaku(possibilities):
+    for box_row in range(3):
+        for box_col in range(3):
+            dic = {}
+            for x in range(box_row*3, box_row*3+3):
+                for y in range(box_col*3, box_col*3+3):
+                    if len(possibilities[x][y]) > 1:
+                        for num in possibilities[x][y]:
+                            if num in dic:
+                                dic[num] += 1
+                            else:
+                                dic[num] = 1
+            for num, count in dic.items():
+                if count == 1:
+                    for x in range(box_row*3, box_row*3+3):
+                        for y in range(box_col*3, box_col*3+3):
+                            if num in possibilities[x][y]:
+                                possibilities[x][y].remove(num)
+    return possibilities
+
 def print_answer(possibilities):
     answer = []
     for i in range(9):
@@ -65,11 +85,11 @@ def solve(board):
         if new_possibilities == possibilities:
             break
         possibilities = new_possibilities
-    print("tate_yoko_done")
-    print_board(new_possibilities)
+    print_answer(new_possibilities)
 
 if __name__ == "__main__":
     for i,level in enumerate(question.questions):
-        print(f"level{i+1}-----------------")
+        print(f"level{i+1}-------------------------")
         for problem in level:
             solve(problem)
+            print()
