@@ -1,12 +1,5 @@
-level1 = [[1,0,5,0,3,0,4,0,9],
-        [0,3,0,0,0,5,0,1,0],
-        [2,0,8,0,6,0,7,0,5],
-        [0,0,0,8,0,2,0,9,0],
-        [9,0,4,0,1,0,6,0,2],
-        [0,5,0,4,0,6,0,8,0],
-        [5,0,6,0,8,0,9,0,7],
-        [0,7,0,6,0,9,0,5,0],
-        [3,0,9,0,5,0,1,0,8]]
+import copy
+import question
 
 def start(problem):
     possibilities = [[[] for _ in range(9)] for _ in range(9)]
@@ -36,7 +29,7 @@ def tate_yoko(possibilities):
     return new_possibilities
 
 def tate_yoko_sikaku(possibilities):
-    new_possibilities = [row[:] for row in possibilities]
+    new_possibilities = copy.deepcopy(possibilities)
     for i in range(9):
         for j in range(9):
             if len(new_possibilities[i][j]) == 1:
@@ -65,15 +58,18 @@ def print_answer(possibilities):
     print_board(answer)
 
 
-if __name__ == "__main__":
-    possibilities = start(level1)
-    print_board(level1)
-    print_board(possibilities)
-
+def solve(board):
+    possibilities = start(board)
     while True:
         new_possibilities = tate_yoko_sikaku(possibilities)
         if new_possibilities == possibilities:
             break
-        possibilities = new_possibilities.copy()
+        possibilities = new_possibilities
     print("tate_yoko_done")
     print_board(new_possibilities)
+
+if __name__ == "__main__":
+    for i,level in enumerate(question.questions):
+        print(f"level{i+1}-----------------")
+        for problem in level:
+            solve(problem)

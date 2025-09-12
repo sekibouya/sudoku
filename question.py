@@ -310,6 +310,8 @@ level7 = [
 						[0,0,0,0,0,0,0,0,0]]
 		]
 
+questions = [level1, level2, level3, level4, level5, level6, level7]
+
 # print(level1)
 # print(level2)
 # print(level3)
