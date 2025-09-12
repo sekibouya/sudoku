@@ -35,6 +35,25 @@ def tate_yoko(possibilities):
                         new_possibilities[k][j].remove(num)
     return new_possibilities
 
+def tate_yoko_sikaku(possibilities):
+    new_possibilities = [row[:] for row in possibilities]
+    for i in range(9):
+        for j in range(9):
+            if len(new_possibilities[i][j]) == 1:
+                num = new_possibilities[i][j][0]
+                for k in range(9):
+                    if k != j and num in new_possibilities[i][k]:
+                        new_possibilities[i][k].remove(num)
+                    if k != i and num in new_possibilities[k][j]:
+                        new_possibilities[k][j].remove(num)
+                box_row = (i // 3)
+                box_col = (j // 3)
+                for m in range(box_row * 3, box_row * 3 + 3):
+                    for n in range(box_col * 3, box_col * 3 + 3):
+                        if num in new_possibilities[m][n] and not (m == i and n == j):
+                            new_possibilities[m][n].remove(num)
+    return new_possibilities
+
 def print_answer(possibilities):
     answer = []
     for i in range(9):
@@ -47,14 +66,14 @@ def print_answer(possibilities):
 
 
 if __name__ == "__main__":
-    possibilities = start(level3)
-    print_board(level3)
+    possibilities = start(level1)
+    print_board(level1)
     print_board(possibilities)
 
-    new_possibilities = tate_yoko(possibilities)
     while True:
-        new_possibilities = tate_yoko(new_possibilities)
+        new_possibilities = tate_yoko_sikaku(possibilities)
         if new_possibilities == possibilities:
             break
+        possibilities = new_possibilities.copy()
     print("tate_yoko_done")
     print_board(new_possibilities)
