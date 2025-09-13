@@ -183,13 +183,13 @@ def solve(board):
         if new_possibilities == possibilities:
             break
         possibilities = new_possibilities
-    # print_answer(new_possibilities)
-    # print(new_possibilities)
-    print_possibilities(new_possibilities)
+    return new_possibilities
 
 if __name__ == "__main__":
     for i,level in enumerate(question.questions):
         print(f"level{i+1}-------------------------")
         for problem in level:
-            solve(problem)
+            # print_answer(new_possibilities)
+            # print(new_possibilities)
+            print_possibilities(solve(problem))
             print()
