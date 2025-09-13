@@ -95,6 +95,7 @@ def solve(board):
         new_possibilities = tate_yoko_sikaku(possibilities)
         new_possibilities = check_only_one_sikaku(new_possibilities)
         new_possibilities = check_only_one_tate_yoko(new_possibilities)
+        new_possibilities = check_same_possibilities(new_possibilities)
         if new_possibilities == possibilities:
             break
         possibilities = new_possibilities
