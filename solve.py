@@ -133,13 +133,11 @@ def sikaku_to_tate_yoko(possibilities):
     new_possibilities = copy.deepcopy(possibilities)
     for box_row in range(3):
         for box_col in range(3):
-            # counts = {num: 0 for num in range(1, 10)}
             positions = {num: [] for num in range(1, 10)}
             
             for x in range(box_row*3, box_row*3+3):
                 for y in range(box_col*3, box_col*3+3):
                     for num in new_possibilities[x][y]:
-                        # counts[num] += 1
                         positions[num].append((x, y))
             for num, pos in positions.items():
                 if len(pos) > 1:
@@ -169,6 +167,10 @@ def print_answer(possibilities):
         answer.append(row)
     print_board(answer)
 
+def print_possibilities(possibilities):
+    for i in range(9):
+        print(possibilities[i])
+
 
 def solve(board):
     possibilities = start(board)
@@ -182,7 +184,8 @@ def solve(board):
             break
         possibilities = new_possibilities
     # print_answer(new_possibilities)
-    print(new_possibilities)
+    # print(new_possibilities)
+    print_possibilities(new_possibilities)
 
 if __name__ == "__main__":
     for i,level in enumerate(question.questions):
